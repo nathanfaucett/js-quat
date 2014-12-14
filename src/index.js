@@ -9,7 +9,15 @@ quat.create = vec4.create;
 
 quat.copy = vec4.copy;
 
+quat.clone = vec4.clone;
+
 quat.set = vec4.set;
+
+quat.lengthSqValues = vec4.lengthSqValues;
+
+quat.lengthValues = vec4.lengthValues;
+
+quat.invLengthValues = vec4.invLengthValues;
 
 quat.dot = vec4.dot;
 
@@ -90,6 +98,7 @@ quat.conjugate = function(out, a) {
     out[0] = -a[0];
     out[1] = -a[1];
     out[2] = -a[2];
+    out[3] = a[3];
 
     return out;
 };
