@@ -36,7 +36,7 @@ quat.equal = vec4.equal;
 quat.notEqual = vec4.notEqual;
 
 
-quat.mul = function(a, b, out) {
+quat.mul = function(out, a, b) {
     var ax = a[0],
         ay = a[1],
         az = a[2],
@@ -46,8 +46,6 @@ quat.mul = function(a, b, out) {
         bz = b[2],
         bw = b[3];
 
-    out = out || a;
-
     out[0] = ax * bw + aw * bx + ay * bz - az * by;
     out[1] = ay * bw + aw * by + az * bx - ax * bz;
     out[2] = az * bw + aw * bz + ax * by - ay * bx;
@@ -56,7 +54,7 @@ quat.mul = function(a, b, out) {
     return out;
 };
 
-quat.div = function(a, b, out) {
+quat.div = function(out, a, b) {
     var ax = a[0],
         ay = a[1],
         az = a[2],
@@ -66,8 +64,6 @@ quat.div = function(a, b, out) {
         bz = -b[2],
         bw = b[3];
 
-    out = out || a;
-
     out[0] = ax * bw + aw * bx + ay * bz - az * by;
     out[1] = ay * bw + aw * by + az * bx - ax * bz;
     out[2] = az * bw + aw * bz + ax * by - ay * bx;
@@ -76,11 +72,10 @@ quat.div = function(a, b, out) {
     return out;
 };
 
-quat.inverse = function(a, out) {
+quat.inverse = function(out, a) {
     var d = quat.dot(a, a);
 
     d = d !== 0 ? 1 / d : d;
-    out = out || a;
 
     out[0] = a[0] * -d;
     out[1] = a[1] * -d;
@@ -90,8 +85,7 @@ quat.inverse = function(a, out) {
     return out;
 };
 
-quat.conjugate = function(a, out) {
-    out = out || a;
+quat.conjugate = function(out, a) {
 
     out[0] = -a[0];
     out[1] = -a[1];
@@ -100,23 +94,25 @@ quat.conjugate = function(a, out) {
     return out;
 };
 
-quat.calculateW = function(a, out) {
+quat.calculateW = function(out, a) {
     var x = a[0],
         y = a[1],
         z = a[2];
 
-    out = out || a;
-    out[0] = -mathf.sqrt(mathf.abs(1 - x * x - y * y - z * z));
+    out[0] = x;
+    out[1] = y;
+    out[2] = z;
+    out[3] = -mathf.sqrt(mathf.abs(1 - x * x - y * y - z * z));
 
     return out;
 };
 
-quat.nlerp = function(a, b, x, out) {
+quat.nlerp = function(out, a, b, x) {
 
-    return quat.normalize(quat.lerp(a, b, x, out));
+    return quat.normalize(quat.lerp(out, a, b, x));
 };
 
-quat.slerp = function(a, b, x, out) {
+quat.slerp = function(out, a, b, x) {
     var ax = a[0],
         ay = a[1],
         az = a[2],
@@ -158,27 +154,27 @@ quat.slerp = function(a, b, x, out) {
     return out;
 };
 
-quat.rotationX = function(a) {
-    var z = a[2],
-        w = a[3];
+quat.rotationX = function(out) {
+    var z = out[2],
+        w = out[3];
 
-    return mathf.atan2(2 * a[0] * w + 2 * a[1] * z, 1 - 2 * (z * z + w * w));
+    return mathf.atan2(2 * out[0] * w + 2 * out[1] * z, 1 - 2 * (z * z + w * w));
 };
 
-quat.rotationY = function(a) {
-    var theta = 2 * (a[0] * a[2] + a[3] * a[1]);
+quat.rotationY = function(out) {
+    var theta = 2 * (out[0] * out[2] + out[3] * out[1]);
 
     return mathf.asin((theta < -1 ? -1 : theta > 1 ? 1 : theta));
 };
 
-quat.rotationZ = function(a) {
-    var y = a[1],
-        z = a[2];
+quat.rotationZ = function(out) {
+    var y = out[1],
+        z = out[2];
 
-    return mathf.atan2(2 * a[0] * y + 2 * z * a[3], 1 - 2 * (y * y + z * z));
+    return mathf.atan2(2 * out[0] * y + 2 * z * out[3], 1 - 2 * (y * y + z * z));
 };
 
-quat.rotateX = function(a, angle, out) {
+quat.rotateX = function(out, a, angle) {
     var x = a[0],
         y = a[1],
         z = a[2],
@@ -186,8 +182,6 @@ quat.rotateX = function(a, angle, out) {
         halfAngle = angle * 0.5,
         s = mathf.sin(halfAngle),
         c = mathf.cos(halfAngle);
-
-    out = out || a;
 
     out[0] = x * c + w * s;
     out[1] = y * c + z * s;
@@ -197,7 +191,7 @@ quat.rotateX = function(a, angle, out) {
     return out;
 };
 
-quat.rotateY = function(a, angle, out) {
+quat.rotateY = function(out, a, angle) {
     var x = a[0],
         y = a[1],
         z = a[2],
@@ -205,8 +199,6 @@ quat.rotateY = function(a, angle, out) {
         halfAngle = angle * 0.5,
         s = mathf.sin(halfAngle),
         c = mathf.cos(halfAngle);
-
-    out = out || a;
 
     out[0] = x * c - z * s;
     out[1] = y * c + w * s;
@@ -216,7 +208,7 @@ quat.rotateY = function(a, angle, out) {
     return out;
 };
 
-quat.rotateZ = function(a, angle, out) {
+quat.rotateZ = function(out, a, angle) {
     var x = a[0],
         y = a[1],
         z = a[2],
@@ -224,8 +216,6 @@ quat.rotateZ = function(a, angle, out) {
         halfAngle = angle * 0.5,
         s = mathf.sin(halfAngle),
         c = mathf.cos(halfAngle);
-
-    out = out || a;
 
     out[0] = x * c + y * s;
     out[1] = y * c - x * s;
@@ -235,17 +225,16 @@ quat.rotateZ = function(a, angle, out) {
     return out;
 };
 
-quat.rotate = function(a, x, y, z, out) {
-    out = out || a;
+quat.rotate = function(out, a, x, y, z) {
 
-    z !== undefined && quat.rotateZ(a, z, out);
-    x !== undefined && quat.rotateX(a, x, out);
-    y !== undefined && quat.rotateY(a, y, out);
+    z !== undefined && quat.rotateZ(out, a, z);
+    x !== undefined && quat.rotateX(out, a, x);
+    y !== undefined && quat.rotateY(out, a, y);
 
     return out;
 };
 
-quat.lookRotation = function(a, forward, up) {
+quat.lookRotation = function(out, forward, up) {
     var fx = forward[0],
         fy = forward[1],
         fz = forward[2],
@@ -261,27 +250,28 @@ quat.lookRotation = function(a, forward, up) {
         dsq = d * d,
         s = dsq !== 0 ? 1 / dsq : dsq;
 
-    a[0] = ax * s;
-    a[1] = ay * s;
-    a[2] = az * s;
-    a[3] = dsq * 0.5;
-
-    return a;
-};
-
-quat.fromAxisAngle = function(a, axis, angle) {
-    var halfAngle = angle * 0.5,
-        s = mathf.sin(halfAngle);
-
-    a[0] = axis[0] * s;
-    a[1] = axis[1] * s;
-    a[2] = axis[2] * s;
-    a[3] = mathf.cos(halfAngle);
+    out[0] = ax * s;
+    out[1] = ay * s;
+    out[2] = az * s;
+    out[3] = dsq * 0.5;
 
     return out;
 };
 
-quat.fromMat = function(a,
+quat.fromAxisAngle = function(out, axis, angle) {
+    var halfAngle = angle * 0.5,
+        s = mathf.sin(halfAngle);
+
+    out[0] = axis[0] * s;
+    out[1] = axis[1] * s;
+    out[2] = axis[2] * s;
+    out[3] = mathf.cos(halfAngle);
+
+    return out;
+};
+
+quat.fromMat = function(
+    out,
     m11, m12, m13,
     m21, m22, m23,
     m31, m32, m33
@@ -321,18 +311,22 @@ quat.fromMat = function(a,
         out[1] = (m23 + m32) * invS;
         out[2] = 0.25 * s;
     }
+
+    return out;
 };
 
-quat.fromMat3 = function(a, m) {
-    return quat.fromMat(a,
+quat.fromMat3 = function(out, m) {
+    return quat.fromMat(
+        out,
         m[0], m[3], m[6],
         m[1], m[4], m[7],
         m[2], m[5], m[8]
     );
 };
 
-quat.fromMat4 = function(a, m) {
-    return quat.fromMat(a,
+quat.fromMat4 = function(out, m) {
+    return quat.fromMat(
+        out,
         m[0], m[4], m[8],
         m[1], m[5], m[9],
         m[2], m[6], m[10]
