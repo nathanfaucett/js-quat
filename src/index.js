@@ -43,6 +43,8 @@ quat.equal = vec4.equal;
 
 quat.notEqual = vec4.notEqual;
 
+quat.str = vec4.str;
+
 
 quat.mul = function(out, a, b) {
     var ax = a[0],
