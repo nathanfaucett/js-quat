@@ -43,7 +43,10 @@ quat.equal = vec4.equal;
 
 quat.notEqual = vec4.notEqual;
 
-quat.str = vec4.str;
+quat.str = function(out) {
+
+    return "Quat(" + out[0] + ", " + out[1] + ", " + out[2] + ", " + out[3] + ")";
+};
 
 
 quat.mul = function(out, a, b) {
