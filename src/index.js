@@ -5,7 +5,22 @@ var mathf = require("mathf"),
 var quat = module.exports;
 
 
-quat.create = vec4.create;
+quat.ArrayType = typeof(Float32Array) !== "undefined" ? Float32Array : mathf.ArrayType;
+
+
+quat.create = function(x, y, z, w, ArrayType) {
+    var out;
+
+    ArrayType = ArrayType !== undefined ? ArrayType : quat.ArrayType;
+    out = new ArrayType(4);
+
+    out[0] = x !== undefined ? x : 0;
+    out[1] = y !== undefined ? y : 0;
+    out[2] = z !== undefined ? z : 0;
+    out[3] = w !== undefined ? w : 1;
+
+    return out;
+};
 
 quat.copy = vec4.copy;
 
