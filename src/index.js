@@ -2,7 +2,7 @@ var mathf = require("mathf"),
     vec4 = require("vec4");
 
 
-var quat = module.exports;
+var quat = exports;
 
 
 quat.ArrayType = typeof(Float32Array) !== "undefined" ? Float32Array : mathf.ArrayType;
@@ -262,9 +262,15 @@ quat.rotateZ = function(out, a, angle) {
 
 quat.rotate = function(out, a, x, y, z) {
 
-    z !== undefined && quat.rotateZ(out, a, z);
-    x !== undefined && quat.rotateX(out, a, x);
-    y !== undefined && quat.rotateY(out, a, y);
+    if (z !== undefined) {
+        quat.rotateZ(out, a, z);
+    }
+    if (x !== undefined) {
+        quat.rotateX(out, a, x);
+    }
+    if (y !== undefined) {
+        quat.rotateY(out, a, y);
+    }
 
     return out;
 };
