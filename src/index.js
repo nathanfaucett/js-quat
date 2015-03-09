@@ -210,52 +210,52 @@ quat.rotationZ = function(out) {
 };
 
 quat.rotateX = function(out, a, angle) {
-    var x = a[0],
-        y = a[1],
-        z = a[2],
-        w = a[3],
+    var ax = a[0],
+        ay = a[1],
+        az = a[2],
+        aw = a[3],
         halfAngle = angle * 0.5,
-        s = mathf.sin(halfAngle),
-        c = mathf.cos(halfAngle);
+        bx = mathf.sin(halfAngle),
+        bw = mathf.cos(halfAngle);
 
-    out[0] = x * c + w * s;
-    out[1] = y * c + z * s;
-    out[2] = z * c - y * s;
-    out[3] = w * c - x * s;
+    out[0] = ax * bw + aw * bx;
+    out[1] = ay * bw + az * bx;
+    out[2] = az * bw - ay * bx;
+    out[3] = aw * bw - ax * bx;
 
     return out;
 };
 
 quat.rotateY = function(out, a, angle) {
-    var x = a[0],
-        y = a[1],
-        z = a[2],
-        w = a[3],
+    var ax = a[0],
+        ay = a[1],
+        az = a[2],
+        aw = a[3],
         halfAngle = angle * 0.5,
-        s = mathf.sin(halfAngle),
-        c = mathf.cos(halfAngle);
+        by = Math.sin(halfAngle),
+        bw = Math.cos(halfAngle);
 
-    out[0] = x * c - z * s;
-    out[1] = y * c + w * s;
-    out[2] = z * c + x * s;
-    out[3] = w * c - y * s;
+    out[0] = ax * bw - az * by;
+    out[1] = ay * bw + aw * by;
+    out[2] = az * bw + ax * by;
+    out[3] = aw * bw - ay * by;
 
     return out;
 };
 
 quat.rotateZ = function(out, a, angle) {
-    var x = a[0],
-        y = a[1],
-        z = a[2],
-        w = a[3],
+    var ax = a[0],
+        ay = a[1],
+        az = a[2],
+        aw = a[3],
         halfAngle = angle * 0.5,
-        s = mathf.sin(halfAngle),
-        c = mathf.cos(halfAngle);
+        bz = Math.sin(halfAngle),
+        bw = Math.cos(halfAngle);
 
-    out[0] = x * c + y * s;
-    out[1] = y * c - x * s;
-    out[2] = z * c + w * s;
-    out[3] = w * c - z * s;
+    out[0] = ax * bw + ay * bz;
+    out[1] = ay * bw - ax * bz;
+    out[2] = az * bw + aw * bz;
+    out[3] = aw * bw - az * bz;
 
     return out;
 };
