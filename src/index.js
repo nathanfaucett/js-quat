@@ -1,4 +1,5 @@
 var mathf = require("mathf"),
+    vec3 = require("vec3"),
     vec4 = require("vec4");
 
 
@@ -275,21 +276,26 @@ quat.rotate = function(out, a, x, y, z) {
     return out;
 };
 
+var lookRotation_up = vec3.create(0, 0, 1);
 quat.lookRotation = function(out, forward, up) {
-    var fx = forward[0],
-        fy = forward[1],
-        fz = forward[2],
-        ux = up[0],
-        uy = up[1],
-        uz = up[2],
+    var fx, fy, fz, ux, uy, uz, ax, ay, az, d, dsq, s;
 
-        ax = uy * fz - uz * fy,
-        ay = uz * fx - ux * fz,
-        az = ux * fy - uy * fx,
+    up = up || lookRotation_up;
 
-        d = (1 + ux * fx + uy * fy + uz * fz) * 2,
-        dsq = d * d,
-        s = dsq !== 0 ? 1 / dsq : dsq;
+    fx = forward[0];
+    fy = forward[1];
+    fz = forward[2];
+    ux = up[0];
+    uy = up[1];
+    uz = up[2];
+
+    ax = uy * fz - uz * fy;
+    ay = uz * fx - ux * fz;
+    az = ux * fy - uy * fx;
+
+    d = (1 + ux * fx + uy * fy + uz * fz) * 2;
+    dsq = d * d;
+    s = dsq !== 0 ? 1 / dsq : dsq;
 
     out[0] = ax * s;
     out[1] = ay * s;

@@ -15,12 +15,13 @@
   "license": "BSD-2-Clause",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "grunt": "",
+    "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-jsbeautifier": ""
+    "grunt-jsbeautifier": "^0.2.10"
   },
   "dependencies": {
-    "mathf": "nathanfaucett/mathf",
-    "vec4": "nathanfaucett/vec4"
+    "mathf": "git://github.com/nathanfaucett/mathf",
+    "vec3": "git://github.com/nathanfaucett/vec3",
+    "vec4": "git://github.com/nathanfaucett/vec4"
   }
 }
