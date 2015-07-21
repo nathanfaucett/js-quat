@@ -7,6 +7,9 @@
     "url": "https://github.com/nathanfaucett/quat.git"
   },
   "main": "src/index.js",
+  "scripts": {
+    "example": "comn -f example/index.js -o example/index.min.js"
+  },
   "keywords": [
     "quat",
     "quat.js"
@@ -20,8 +23,8 @@
     "grunt-jsbeautifier": "^0.2.10"
   },
   "dependencies": {
-    "mathf": "git://github.com/nathanfaucett/mathf",
-    "vec3": "git://github.com/nathanfaucett/vec3",
-    "vec4": "git://github.com/nathanfaucett/vec4"
+    "mathf": "git://github.com/nathanfaucett/mathf.git",
+    "vec3": "git://github.com/nathanfaucett/vec3.git",
+    "vec4": "git://github.com/nathanfaucett/vec4.git"
   }
 }
