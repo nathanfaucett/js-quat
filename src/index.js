@@ -1,6 +1,7 @@
 var mathf = require("mathf"),
     vec3 = require("vec3"),
-    vec4 = require("vec4");
+    vec4 = require("vec4"),
+    isNumber = require("is_number");
 
 
 var quat = exports;
@@ -12,10 +13,10 @@ quat.ArrayType = typeof(Float32Array) !== "undefined" ? Float32Array : mathf.Arr
 quat.create = function(x, y, z, w) {
     var out = new quat.ArrayType(4);
 
-    out[0] = x !== undefined ? x : 0;
-    out[1] = y !== undefined ? y : 0;
-    out[2] = z !== undefined ? z : 0;
-    out[3] = w !== undefined ? w : 1;
+    out[0] = isNumber(x) ? x : 0;
+    out[1] = isNumber(y) ? y : 0;
+    out[2] = isNumber(z) ? z : 0;
+    out[3] = isNumber(w) ? w : 1;
 
     return out;
 };
@@ -66,10 +67,10 @@ quat.equal = vec4.equal;
 quat.notEqual = vec4.notEqual;
 
 quat.str = function(out) {
-
     return "Quat(" + out[0] + ", " + out[1] + ", " + out[2] + ", " + out[3] + ")";
 };
 
+quat.toString = quat.string = quat.str;
 
 quat.mul = function(out, a, b) {
     var ax = a[0],
@@ -144,7 +145,6 @@ quat.calculateW = function(out, a) {
 };
 
 quat.nlerp = function(out, a, b, x) {
-
     return quat.normalize(quat.lerp(out, a, b, x));
 };
 
@@ -263,13 +263,13 @@ quat.rotateZ = function(out, a, angle) {
 
 quat.rotate = function(out, a, x, y, z) {
 
-    if (z !== undefined) {
+    if (isNumber(z)) {
         quat.rotateZ(out, a, z);
     }
-    if (x !== undefined) {
+    if (isNumber(x)) {
         quat.rotateX(out, a, x);
     }
-    if (y !== undefined) {
+    if (isNumber(y)) {
         quat.rotateY(out, a, y);
     }
 
