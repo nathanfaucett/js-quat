@@ -1,5 +1,5 @@
 {
-  "name": "quat",
+  "name": "@nathanfaucett/quat",
   "version": "0.0.1",
   "description": "quat for the browser and node.js",
   "repository": {
@@ -21,17 +21,17 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.11.3",
-    "grunt-jsbeautifier": "^0.2.10",
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-jsbeautifier": "^0.2.13",
     "tap-spec": "^4.1.0",
     "tape": "^4.2.2",
     "zuul": "^3.7.2"
   },
   "dependencies": {
-    "is_number": "git://github.com/nathanfaucett/is_number.git",
-    "mathf": "git://github.com/nathanfaucett/mathf.git",
-    "vec3": "git://github.com/nathanfaucett/vec3.git",
-    "vec4": "git://github.com/nathanfaucett/vec4.git"
+    "@nathanfaucett/is_number": "^0.0.1",
+    "@nathanfaucett/mathf": "^0.0.1",
+    "@nathanfaucett/vec3": "^0.0.1",
+    "@nathanfaucett/vec4": "^0.0.1"
   }
 }
