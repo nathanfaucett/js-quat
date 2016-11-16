@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/quat",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "quat for the browser and node.js",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
   "dependencies": {
     "@nathanfaucett/is_number": "^0.0.1",
     "@nathanfaucett/mathf": "^0.0.3",
-    "@nathanfaucett/vec3": "^0.0.2",
-    "@nathanfaucett/vec4": "^0.0.2"
+    "@nathanfaucett/vec3": "^0.0.3",
+    "@nathanfaucett/vec4": "^0.0.3"
   }
 }

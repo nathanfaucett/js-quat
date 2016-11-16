@@ -34,6 +34,16 @@ quat.clone = function(a) {
     return out;
 };
 
+quat.identity = function(out) {
+
+    out[0] = 0.0;
+    out[1] = 0.0;
+    out[2] = 0.0;
+    out[3] = 1.0;
+
+    return out;
+};
+
 quat.set = vec4.set;
 
 quat.lengthSqValues = vec4.lengthSqValues;
@@ -111,14 +121,23 @@ quat.div = function(out, a, b) {
 quat.inverse = function(out, a) {
     var d = quat.dot(a, a);
 
-    d = d !== 0 ? 1 / d : d;
+    if (d === 0) {
+        out[0] = 0.0;
+        out[1] = 0.0;
+        out[2] = 0.0;
+        out[3] = 0.0;
 
-    out[0] = a[0] * -d;
-    out[1] = a[1] * -d;
-    out[2] = a[2] * -d;
-    out[3] = a[3] * d;
+        return out;
+    } else {
+        d = 1 / d;
 
-    return out;
+        out[0] = a[0] * -d;
+        out[1] = a[1] * -d;
+        out[2] = a[2] * -d;
+        out[3] = a[3] * d;
+
+        return out;
+    }
 };
 
 quat.conjugate = function(out, a) {
@@ -276,7 +295,7 @@ quat.rotate = function(out, a, x, y, z) {
     return out;
 };
 
-var lookRotation_up = vec3.create(0, 0, 1);
+var lookRotation_up = vec3.create(0.0, 0.0, 1.0);
 quat.lookRotation = function(out, forward, up) {
     var fx, fy, fz, ux, uy, uz, ax, ay, az, d, dsq, s;
 
@@ -293,9 +312,9 @@ quat.lookRotation = function(out, forward, up) {
     ay = uz * fx - ux * fz;
     az = ux * fy - uy * fx;
 
-    d = (1 + ux * fx + uy * fy + uz * fz) * 2;
+    d = (1.0 + ux * fx + uy * fy + uz * fz) * 2.0;
     dsq = d * d;
-    s = dsq !== 0 ? 1 / dsq : dsq;
+    s = dsq !== 0 ? 1.0 / dsq : dsq;
 
     out[0] = ax * s;
     out[1] = ay * s;
@@ -303,6 +322,62 @@ quat.lookRotation = function(out, forward, up) {
     out[3] = dsq * 0.5;
 
     return out;
+};
+
+var rotationTo_tmp = vec3.create(),
+    rotationTo_x = vec3.create(1.0, 0.0, 0.0),
+    rotationTo_y = vec3.create(0.0, 1.0, 0.0);
+quat.rotationTo = function(out, a, b) {
+    var dot = vec3.dot(a, b),
+        unitx = rotationTo_x,
+        unity = rotationTo_y,
+        tmp = rotationTo_tmp;
+
+    if (dot < -0.999999) {
+        vec3.cross(tmp, unitx, a);
+
+        if (vec3.length(tmp) < 0.000001) {
+            vec3.cross(tmp, unity, a);
+        }
+
+        vec3.normalize(tmp, tmp);
+        quat.fromAxisAngle(out, tmp, Math.PI);
+
+        return out;
+    } else if (dot > 0.999999) {
+        out[0] = 0.0;
+        out[1] = 0.0;
+        out[2] = 0.0;
+        out[3] = 1.0;
+
+        return out;
+    } else {
+        vec3.cross(tmp, a, b);
+
+        out[0] = tmp[0];
+        out[1] = tmp[1];
+        out[2] = tmp[2];
+        out[3] = 1.0 + dot;
+
+        return quat.normalize(out, out);
+    }
+};
+
+quat.getAxisAngle = function(out, q) {
+    var angle = Math.acos(q[3]) * 2.0;
+    s = Math.sin(angle / 2.0);
+
+    if (s !== 0.0) {
+        out[0] = q[0] / s;
+        out[1] = q[1] / s;
+        out[2] = q[2] / s;
+    } else {
+        out[0] = 0;
+        out[1] = 0;
+        out[2] = 1;
+    }
+
+    return angle;
 };
 
 quat.fromAxisAngle = function(out, axis, angle) {
@@ -326,7 +401,7 @@ quat.fromMat = function(
     var trace = m11 + m22 + m33,
         s, invS;
 
-    if (trace > 0) {
+    if (trace > 0.0) {
         s = 0.5 / mathf.sqrt(trace + 1);
 
         out[3] = 0.25 / s;
@@ -335,15 +410,15 @@ quat.fromMat = function(
         out[2] = (m21 - m12) * s;
     } else if (m11 > m22 && m11 > m33) {
         s = 2 * mathf.sqrt(1 + m11 - m22 - m33);
-        invS = 1 / s;
+        invS = 1.0 / s;
 
         out[3] = (m32 - m23) * invS;
         out[0] = 0.25 * s;
         out[1] = (m12 + m21) * invS;
         out[2] = (m13 + m31) * invS;
     } else if (m22 > m33) {
-        s = 2 * mathf.sqrt(1 + m22 - m11 - m33);
-        invS = 1 / s;
+        s = 2.0 * mathf.sqrt(1.0 + m22 - m11 - m33);
+        invS = 1.0 / s;
 
         out[3] = (m13 - m31) * invS;
         out[0] = (m12 + m21) * invS;
@@ -351,7 +426,7 @@ quat.fromMat = function(
         out[2] = (m23 + m32) * invS;
     } else {
         s = 2 * mathf.sqrt(1 + m33 - m11 - m22);
-        invS = 1 / s;
+        invS = 1.0 / s;
 
         out[3] = (m21 - m12) * invS;
         out[0] = (m13 + m31) * invS;
@@ -361,6 +436,17 @@ quat.fromMat = function(
 
     return out;
 };
+
+quat.fromMat2 = function(out, m) {
+    return quat.fromMat(
+        out,
+        m[0], m[2], 0.0,
+        m[1], m[3], 0.0,
+        0.0, 0.0, 1.0
+    );
+};
+
+quat.fromMat32 = quat.fromMat2;
 
 quat.fromMat3 = function(out, m) {
     return quat.fromMat(
